@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicine Reminder App</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💊 Medicine Reminder</h1>
+            <p>Sistem Pengingat Minum Obat Sederhana</p>
+        </header>
+
+        <div class="forms-container">
+            <div class="card form-card">
+                <h3>1. Registrasi Pasien</h3>
+                <form action="/add-user" method="POST">
+                    <input type="text" name="name" placeholder="Nama Lengkap" required>
+                    <input type="email" name="email" placeholder="Email (untuk notifikasi)" required>
+                    <input type="date" name="dob" required>
+                    <input type="text" name="phone_number" placeholder="Nomor Telepon (mis: 081212345689)" required>
+                    <button type="submit">Tambah Pasien</button>
+                </form>
+            </div>
+
+           <div class="card form-card">
+                <h3>2. Tambah Referensi Obat</h3>
+                <form action="/add-medicine" method="POST">
+                    <select name="user_id" required>
+                        <option value="" disabled selected>Pilih Pasien</option>
+                        <% users.forEach(user => { %>
+                            <option value="<%= user.id %>"><%= user.name %></option>
+                        <% }) %>
+                    </select>
+                    <input type="text" name="name" placeholder="Nama Obat (mis: Paracetamol)" required>
+                                        <input type="number" name="doses_per_day" placeholder="Jumlah Dosis Per Hari (mis: 2)" required min="1">
+                    <input type="text" name="dose_times" placeholder="Waktu Dosis (mis: 06:00, 18:00)" required pattern="^([0-1][0-9]|2[0-3]):[0-5][0-9](,\s*([0-1][0-9]|2[0-3]):[0-5][0-9])*$">
+                    <input type="url" name="photo_link" placeholder="Link Foto Obat (URL)" required>
+                    <button type="submit" class="btn-secondary">Simpan Obat</button>
+                </form>
+            </div>
+
+            <% if (!connectedWa) { %>
+            <a href="/qr" class="row">
+                <div class="card form-card row">
+
+                        <h3>Connect whatsapp</h3>
+                        <img src="https://www.pngall.com/wp-content/uploads/13/Whatsapp-Logo-PNG-Images.png" height="20px" width="20px"/>
+                </div>
+            </a>
+            <% } %>
+        </div>
+
+        <hr>
+
+        <h2>Daftar Pengingat Obat</h2>
+        <div class="medicine-grid">
+            <% if (medicines.length === 0) { %>
+                <p style="text-align: center; width: 100%;">Belum ada data obat.</p>
+            <% } %>
+
+            <% medicines.forEach(med => { %>
+                <div class="medicine-card">
+                    <div class="med-img" style="background-image: url('<%= med.photo_link %>');"></div>
+                    <div class="med-info">
+                        <h4><%= med.name %></h4>
+                        <p class="patient-name">Pasien: <%= med.user_name %></p>
+                        <div class="tags">
+                                                        <span class="tag">Dosis: <%= med.doses_per_day %>x sehari</span>
+                            <span class="tag">Waktu: <%= med.dose_times %></span>
+                        </div>
+                        
+                        <div class="actions">
+                            <a href="/edit-medicine/<%= med.id %>">Edit</a>
+                            
+                            <a href="/delete-medicine/<%= med.id %>" 
+                            onclick="return confirm('Apakah Anda yakin ingin menghapus obat ini?');">
+                            Hapus
+                            </a>
+                        </div>
+                        </div>
+                </div>
+            <% }) %>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2025 Muhammad Haikal Putra Hendrawan</p>
+        </div>
+    </div>
+</body>
+</html>

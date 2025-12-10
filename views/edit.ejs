@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Obat</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>✏️ Edit Data Obat</h1>
+            <p>Perbarui informasi obat di bawah ini</p>
+        </header>
+
+        <div class="card" style="max-width: 500px; margin: 0 auto;">
+            <form action="/update-medicine/<%= medicine.id %>" method="POST">
+                
+                <label>Nama Obat:</label>
+                <input type="text" name="name" value="<%= medicine.name %>" required>
+                
+               <label>Jumlah Dosis Per Hari:</label>
+                <input 
+                    type="number" 
+                    name="doses_per_day" 
+                    value="<%= medicine.doses_per_day %>" 
+                    placeholder="mis: 2"
+                    required 
+                    min="1"
+                >
+                
+                <label>Waktu Dosis (HH:MM, dipisahkan koma):</label>
+                <input 
+                    type="text" 
+                    name="dose_times" 
+                    value="<%= medicine.dose_times %>" 
+                    placeholder="mis: 06:00, 18:00"
+                    required
+                    pattern="^([0-1][0-9]|2[0-3]):[0-5][0-9](,\s*([0-1][0-9]|2[0-3]):[0-5][0-9])*$"
+                >
+                
+                <label>Link Foto:</label>
+                <input type="url" name="photo_link" value="<%= medicine.photo_link %>" required>
+                
+                <div style="text-align: center; margin-bottom: 15px;">
+                    <img src="<%= medicine.photo_link %>" alt="Preview" style="height: 100px; border-radius: 8px;">
+                </div>
+
+                <button type="submit" class="btn-secondary">Simpan Perubahan</button>
+                <a href="/" style="display: block; text-align: center; margin-top: 10px; text-decoration: none; color: #7f8c8d;">Batal & Kembali</a>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

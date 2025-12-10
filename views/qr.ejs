@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicine Reminder App</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💊 Medicine Reminder</h1>
+            <p>Sistem Pengingat Minum Obat Sederhana</p>
+        </header>
+
+         <div class="row">
+            <a href="/">
+                <button style="width: 100px;">⬅ Back</button>
+            </a> 
+            <h1>Hubungkan Whatsapp</h1>
+        </div>
+
+        <div>
+            <ol>
+                <li>Tunggu sampai QR code muncul</li>
+                <li>Buka aplikasi whatsapp anda</li>
+                <li>Pilih menu settings -> linked device -> link a device</li>
+                <li>Scan QR code yang muncul dengan HP anda</li>
+            </ol>
+        </div>
+
+         <div class="row">
+            <div class="col-xl-7 col-lg-5">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold ">QR</h6>
+                    </div>
+                    <div class="card-body d-flex justify-content-start">
+                        <div class="chart-area">
+                            <img src="" alt="QR Code" id="qrcode">
+                        </div>
+                            <h5>Logs:</h5>
+                            <ul class="logs"></ul>
+                        <hr>
+
+                    </div>
+                </div>
+                <input type="hidden" id="broadcastData" value="[]">
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; 2025 Muhammad Haikal Putra Hendrawan</p>
+        </div>
+    </div>
+</body> 
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
+    <script src="https://cdn.socket.io/4.7.3/socket.io.min.js" integrity="sha384-+miq58Ltmjm+SSP5g8Ok6dpMO/6R4n8xe/x1Yj0Bdb9kiEz25LTnWv/GZQTRQamg" crossorigin="anonymous"></script>
+
+    <script>
+        const socket = io();
+
+        socket.on('message', function(msg) {
+            $('.logs').prepend($('<li>').text(msg));
+        });
+
+        socket.on('qr', function(src) {
+            $('#qrcode').attr('src', src);
+            $('#qrcode').show();
+        });
+
+        socket.on('ready', function(data) {
+            $('#qrcode').hide();
+        });
+
+        socket.on('authenticated', function(data) {
+            $('#qrcode').hide();
+        });
+    </script>
+
+</html>
